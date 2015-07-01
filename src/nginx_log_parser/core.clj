@@ -33,9 +33,10 @@
   [& args]
   (with-open [rdr (io/reader "access.log")]
     (doall
-      (map println
-           (take 20
-                 (reverse
-                   (sort-by last
-                            (analyze-field (line-seq rdr)
-                                           get-ua))))))))
+	  (->>
+	    get-url
+		(analyze-field (line-seq rdr))
+		(sort-by last)
+		(reverse)
+		(take 20)
+		(map println)))))
